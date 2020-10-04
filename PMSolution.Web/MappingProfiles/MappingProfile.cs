@@ -12,9 +12,13 @@ namespace PMSolution.Web.MappingProfiles
     {
         public MappingProfile()
         {
-            CreateMap<AddPatientViewModel, Patient>();
-            CreateMap<EditPatientViewModel, Patient>();
+            CreateMap<AddEditPatientViewModel, Patient>();
             CreateMap<Patient, PatientViewModel>();
+            CreateMap<Patient, PatientsViewModel>();
+
+            CreateMap<AddEditStaffViewModel, Staff>();
+            CreateMap<Staff, StaffsViewModel>();
+            CreateMap<Staff, StaffViewModel>();
         }
     }
 }

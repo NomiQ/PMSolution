@@ -7,7 +7,7 @@ using PMSolution.Web.Enums;
 
 namespace PMSolution.Web.ViewModels
 {
-    public class EditPatientViewModel
+    public class AddEditPatientViewModel
     {
         public int Id { get; set; }
 
@@ -16,6 +16,7 @@ namespace PMSolution.Web.ViewModels
         public string MRN { get; set; }
 
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select gender")]
         public Gender Gender { get; set; }
 
         [Required]
@@ -38,7 +39,7 @@ namespace PMSolution.Web.ViewModels
         [Required]
         [Display(Name = "Date of birth")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
 
         [Required]

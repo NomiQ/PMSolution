@@ -32,6 +32,7 @@ namespace PMSolution.Web.Models
         }
 
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -39,6 +40,7 @@ namespace PMSolution.Web.Models
 
             // fluent API configuration
             modelBuilder.Entity<Patient>().Property(c => c.DateOfBirth).HasColumnType("date");
+            modelBuilder.Entity<Staff>().Property(c => c.DateOfBirth).HasColumnType("date");
         }
     }
 }

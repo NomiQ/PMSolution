@@ -208,8 +208,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PatientManagementController.cs" />
+    <Compile Include="Controllers\StaffManagementController.cs" />
     <Compile Include="Domain\Patient.cs" />
+    <Compile Include="Domain\Staff.cs" />
     <Compile Include="Enums\Gender.cs" />
+    <Compile Include="Enums\StaffType.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -218,18 +221,26 @@
     <Compile Include="Migrations\202010041025132_firstMigration.Designer.cs">
       <DependentUpon>202010041025132_firstMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010041442581_AddedStaffTable.cs" />
+    <Compile Include="Migrations\202010041442581_AddedStaffTable.Designer.cs">
+      <DependentUpon>202010041442581_AddedStaffTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IPatientRepository.cs" />
+    <Compile Include="Services\IStaffRepository.cs" />
     <Compile Include="Services\PatientRepository.cs" />
+    <Compile Include="Services\StaffRepository.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\AddPatientViewModel.cs" />
-    <Compile Include="ViewModels\EditPatientViewModel.cs" />
+    <Compile Include="ViewModels\AddEditPatientViewModel.cs" />
+    <Compile Include="ViewModels\AddEditStaffViewModel.cs" />
     <Compile Include="ViewModels\PatientsViewModel.cs" />
     <Compile Include="ViewModels\PatientViewModel.cs" />
+    <Compile Include="ViewModels\StaffsViewModel.cs" />
+    <Compile Include="ViewModels\StaffViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -300,6 +311,11 @@
     <Content Include="Views\PatientManagement\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutFullPage.cshtml" />
     <Content Include="Views\PatientManagement\ViewPatient.cshtml" />
+    <Content Include="Views\PatientManagement\EditPatient.cshtml" />
+    <Content Include="Views\StaffManagement\Index.cshtml" />
+    <Content Include="Views\StaffManagement\AddStaff.cshtml" />
+    <Content Include="Views\StaffManagement\EditStaff.cshtml" />
+    <Content Include="Views\StaffManagement\ViewStaff.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -320,6 +336,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202010041025132_firstMigration.resx">
       <DependentUpon>202010041025132_firstMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010041442581_AddedStaffTable.resx">
+      <DependentUpon>202010041442581_AddedStaffTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

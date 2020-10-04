@@ -53,12 +53,12 @@ namespace PMSolution.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddPatient(AddPatientViewModel patientRequest)
+        public ActionResult AddPatient(AddEditPatientViewModel patientRequest)
         {
 
             if (ModelState.IsValid)
             {
-                var patient = _mapper.Map<AddPatientViewModel, Patient>(patientRequest);
+                var patient = _mapper.Map<AddEditPatientViewModel, Patient>(patientRequest);
                 var created = _patientRepository.Create(patient);
 
                 if (created)
@@ -79,7 +79,7 @@ namespace PMSolution.Web.Controllers
             if (patient != null)
             {
                 // map to view model
-                var editPatient = _mapper.Map<Patient, EditPatientViewModel>(patient);
+                var editPatient = _mapper.Map<Patient, AddEditPatientViewModel>(patient);
 
                 return View(editPatient);
             }
@@ -90,11 +90,11 @@ namespace PMSolution.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPatient(EditPatientViewModel editPatient)
+        public ActionResult EditPatient(AddEditPatientViewModel editPatient)
         {
             if (ModelState.IsValid)
             {
-                var patient = _mapper.Map<EditPatientViewModel, Patient>(editPatient);
+                var patient = _mapper.Map<AddEditPatientViewModel, Patient>(editPatient);
                 var updated = _patientRepository.Update(patient);
 
                 if (updated)

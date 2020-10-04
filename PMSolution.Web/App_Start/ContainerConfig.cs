@@ -45,6 +45,9 @@ namespace PMSolution.Web
             builder.RegisterType<PatientRepository>()
                    .As<IPatientRepository>()
                    .InstancePerRequest();
+            builder.RegisterType<StaffRepository>()
+                  .As<IStaffRepository>()
+                  .InstancePerRequest();
 
 
 

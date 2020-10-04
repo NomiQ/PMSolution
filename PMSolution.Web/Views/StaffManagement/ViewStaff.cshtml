@@ -1,7 +1,7 @@
-﻿@model PMSolution.Web.ViewModels.PatientViewModel
+﻿@model PMSolution.Web.ViewModels.StaffViewModel
 
 @{
-    ViewBag.Title = "Patient Details";
+    ViewBag.Title = "ViewStaff";
 }
 
 <div style="padding-top: 20px;">
@@ -16,8 +16,8 @@
         <div class="card-body">
             <table class="table table-borderless">
                 <tr>
-                    <th class="justify-content-end">@Html.DisplayNameFor(model => model.MRN)</th>
-                    <td>@Html.DisplayFor(model => model.MRN)</td>
+                    <th>@Html.DisplayNameFor(model => model.Type)</th>
+                    <td>@Html.DisplayFor(model => model.Type)</td>
                 </tr>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Gender)</th>
@@ -51,7 +51,7 @@
 
             <div class="row justify-content-end">
                 <div class="col-sm-2">
-                    @Html.ActionLink("Edit", "EditPatient", new { id = Model.Id }, new { @class = "btn btn-md btn-outline-success" })
+                    @Html.ActionLink("Edit", "EditStaff", new { id = Model.Id }, new { @class = "btn btn-md btn-outline-success" })
                 </div>
             </div>
         </div>
@@ -59,38 +59,6 @@
 
     </div>
 </div>
-<div class="card border-secondary mb-3" style="max-width: 40rem;">
-    <div class="card-header">Appointments</div>
-    <div class="card-body">
-
-        <table class="table table-borderless">
-            @*will add appoinmets here*@
-
-
-        </table>
-        <p>diplay past and future appointments here</p>
-        <p>Will add functionality to delete or edit individual apointments here</p>
-        
-    </div>
-
-
-</div>
-<div class="card border-secondary mb-3" style="max-width: 40rem;">
-    <div class="card-header">Assessments</div>
-    <div class="card-body">
-
-        <table class="table table-borderless">
-            @*will add assessments here*@
-
-
-        </table>
-        <p>Will display assessments here</p>
-
-    </div>
-
-
-</div>
-
 <div class="row justify-content-center">
     <div class="col-sm-2">
         @Html.ActionLink("Back", "Index", "", new { @class = "btn btn-block btn-outline-primary" })

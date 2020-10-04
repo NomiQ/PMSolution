@@ -1,10 +1,10 @@
-﻿@model PMSolution.Web.ViewModels.PatientsViewModel
+﻿@model PMSolution.Web.ViewModels.StaffsViewModel
 @{
-    ViewBag.Title = "Patient Management";
+    ViewBag.Title = "Staff Management";
 }
 <script>
     function myFunction() {
-        var x = document.getElementById("searchPatient");
+        var x = document.getElementById("searchStaff");
         if (x.style.display === "none") {
             x.style.display = "block";
         } else {
@@ -13,8 +13,8 @@
     }
 </script>
 
-<div style="padding-top: 40px;">
-    <h4>Patient Management</h4>
+<div style="padding-top: 20px;">
+    <h4>Staff Management</h4>
 </div>
 
 <hr />
@@ -24,19 +24,19 @@
         <div class="row">
             <div class="form-group col-md-2">
                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" onclick="myFunction()">
-                    Search patient
+                    Search Staff
                 </button>
             </div>
             <div class="form-group col-md-3">
 
-                @Html.ActionLink("Add new patient", "AddPatient", "PatientManagement",
+                @Html.ActionLink("Add new staff", "AddStaff", "PatientManagement",
                 new { @class = "btn btn-sm btn-outline-secondary" })
 
             </div>
         </div>
-        @if (Model.AllPatients.Any())
+        @if (Model.AllStaff.Any())
         {
-            <div class="col-md-8" id="searchPatient">
+            <div class="col-md-8" id="searchStaff">
                 <div class="row">
                     <div class="table-responsive border rounded  border-top-0">
                         <table class="table">
@@ -67,38 +67,41 @@
         }
     </div>
 </div>
-@if (Model.AllPatients.Any())
+
+@if (Model.AllStaff.Any())
 {
     <div class="table-responsive border">
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Name</th>
+                    <th scope="col">Type</th>
                     <th scope="col">Date of birth</th>
                     <th scope="col">CNIC</th>
-                    <th scope="col" class="text-center">Action</th>
+                    <th class="text-center">Action</th>
 
                 </tr>
             </thead>
             <tbody>
-                @foreach (var patient in Model.AllPatients)
+                @foreach (var staff in Model.AllStaff)
                 {
                     <tr>
-                        <td scope="row">@($"{patient.FirstName} {patient.LastName}")</td>
-                        <td>@patient.DateOfBirth.ToString("dd-MM-yyyy")</td>
-                        <td>@patient.CNIC</td>
+                        <td scope="row">@($"{staff.FirstName} {staff.LastName}")</td>
+                        <td>@staff.Type</td>
+                        <td>@staff.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                        <td>@staff.CNIC</td>
                         <td>
                             <div class="row justify-content-center">
                                 <div>
-                                    @Html.ActionLink("Edit", "EditPatient", "PatientManagement", new { id = patient.Id },
+                                    @Html.ActionLink("Edit", "EditStaff", "StaffManagement", new { id = staff.Id },
                                         new { @class = "btn btn-sm btn-outline-success" })
                                 </div>
                                 <div>
-                                    @Html.ActionLink("View", "ViewPatient", new { id = patient.Id },
+                                    @Html.ActionLink("View", "ViewStaff", new { id = staff.Id },
                                         new { @class = "btn btn-sm btn-outline-info" })
                                 </div>
                                 <div>
-                                    @Html.ActionLink("Delete", "DeletePatient", "PatientManagement", new { id = patient.Id },
+                                    @Html.ActionLink("Delete", "DeleteStaff", "StaffManagement", new { id = staff.Id },
                                         new { @class = "btn btn-sm btn-outline-danger" })
                                 </div>
                             </div>
@@ -113,7 +116,7 @@
 else
 {
     <div>
-        <p class="text-info">No patient record exist in the system!</p>
+        <p class="text-info">No staff record exist in the system!</p>
     </div>
 }
 
