@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+
+<body>
+    <div class="container">
+
+
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <img src="~/Images/sample2.png" height="50" />
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor03">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        @Html.ActionLink("Home", "Index", "Home", new object { },
+                       new { @class = "nav-link" })
+                    </li>
+
+                    <li class="nav-item">
+                        @Html.ActionLink("About", "About", "Home", new object { },
+                      new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Contact", "Contact", "Home", new object { },
+                      new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Admin", "Admin", "Home", new object { },
+                      new { @class = "nav-link" })
+                    </li>
+                </ul>
+
+                @Html.Partial("_LoginPartial")
+
+            </div>
+        </nav>
+
+        <div class="container body-content">
+            @RenderBody()
+            
+            
+                
+                <footer class="fixed-bottom flex-fill">
+                    <div class="container">
+                        <hr />
+                        <div class="text-center">&copy; @DateTime.Now.Year - Dr Nadia's Clinic</div>
+                    </div>                    
+                </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

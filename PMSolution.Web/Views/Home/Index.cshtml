@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3" style="padding-left: 0px; padding-top:5px;">
+            <div class="card" style="margin-top:10px;">
+                <div class="card-body">
+                    <div class="row justify-content-center align-items-center">
+                        <i class="fa fa-plus-square fa-2x" style="color:#2C3E50"></i>
+                    </div>
+                    <div class="row justify-content-center">
+                        @Html.ActionLink("Patient Management", "Index", "PatientManagement", null,
+                        new { @class = "stretched-link", style = "font-size:larger;font-weight:bold;text-decoration:none;color:#2C3E50" })
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="margin-top:10px;">
+                <div class="card-body">
+                    <div class="row justify-content-center align-items-center">
+                        <i class="fa fa-calendar fa-2x" style="color:#2C3E50"></i>
+                    </div>
+                    <div class="row justify-content-center">
+                        @Html.ActionLink("Appointments", "Index", "PatientManagement", null,
+                        new { @class = "stretched-link", style = "font-size:larger;font-weight:bold;text-decoration:none;color:#2C3E50" })
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="margin-top:10px;">
+                <div class="card-body">
+                    <div class="row justify-content-center align-items-center">
+                        <i class="fa fa-check-square-o fa-2x" style="color:#2C3E50"></i>
+                    </div>
+                    <div class="row justify-content-center">
+                        @Html.ActionLink("Assessments", "Index", "PatientManagement", null,
+                        new { @class = "stretched-link", style = "font-size:larger;font-weight:bold;text-decoration:none;color:#2C3E50" })
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="margin-top:10px;">
+                <div class="card-body">
+                    <div class="row justify-content-center align-items-center">
+                        <i class="fa fa-user-md fa-2x" style="color:#2C3E50"></i>
+                    </div>
+                    <div class="row justify-content-center">
+                        @Html.ActionLink("Staff Management", "Index", "PatientManagement", null,
+                        new { @class = "stretched-link", style = "font-size:larger;font-weight:bold;text-decoration:none;color:#2C3E50" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-9">
+            <div class="card bg-transparent border-0 text-dark">
+                <div class="card-body">
+                    <div class="col-md-offset-6">
+                        <div class="alert alert-dismissible alert-warning">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <h4 class="alert-heading">Warning!</h4>
+                            <p class="mb-0">The main symptoms of coronavirus (COVID-19) are a high temperature, a new, continuous cough and a loss or change to your sense of smell or taste.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="jumbotron bg-light">
+                <h4>Welcome message!</h4>
+            </div>
+        </div>
+    </div>
+</div>
