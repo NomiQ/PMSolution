@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using AutoMapper;
+using PMSolution.Web.App_Start;
 using PMSolution.Web.MappingProfiles;
 
 namespace PMSolution.Web
@@ -13,6 +14,7 @@ namespace PMSolution.Web
     {
         protected void Application_Start()
         {
+
             // auto mapper initialization
             Mapper.Initialize(cfg => cfg.AddProfile<MappingProfile>());
 

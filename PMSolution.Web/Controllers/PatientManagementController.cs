@@ -13,12 +13,10 @@ namespace PMSolution.Web.Controllers
     public class PatientManagementController : Controller
     {
         private readonly IPatientRepository _patientRepository;
-        private readonly IMapper _mapper;
 
-        public PatientManagementController(IPatientRepository patientRepository, IMapper mapper)
+        public PatientManagementController(IPatientRepository patientRepository)
         {
             _patientRepository = patientRepository;
-            _mapper = mapper;
         }
 
         public ActionResult Index()
@@ -33,12 +31,35 @@ namespace PMSolution.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult SearchPatient()
+        {
+            var model = new SearchPatientsViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult SearchPatient(SearchPatientsViewModel patient)
+        {
+            // TODO........need to check null list case
+
+            var patientList = _patientRepository.SearchPatient(patient.Surname, patient.DateOfBirth).ToList();
+
+            var model = new SearchPatientsViewModel()
+            {
+                SearchPatients = patientList
+            };
+
+            return View(model);
+
+        }
+
+        [HttpGet]
         public ActionResult ViewPatient(int id)
         {
             var patient = _patientRepository.GetPatient(id);
             if (patient != null)
             {
-                var mapPatient = _mapper.Map<Patient, PatientViewModel>(patient);
+                var mapPatient = Mapper.Map<Patient, PatientViewModel>(patient);
                 return View(mapPatient);
             }
 
@@ -58,7 +79,7 @@ namespace PMSolution.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var patient = _mapper.Map<AddEditPatientViewModel, Patient>(patientRequest);
+                var patient =  Mapper.Map<AddEditPatientViewModel, Patient>(patientRequest);
                 var created = _patientRepository.Create(patient);
 
                 if (created)
@@ -79,7 +100,7 @@ namespace PMSolution.Web.Controllers
             if (patient != null)
             {
                 // map to view model
-                var editPatient = _mapper.Map<Patient, AddEditPatientViewModel>(patient);
+                var editPatient = Mapper.Map<Patient, AddEditPatientViewModel>(patient);
 
                 return View(editPatient);
             }
@@ -94,7 +115,7 @@ namespace PMSolution.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var patient = _mapper.Map<AddEditPatientViewModel, Patient>(editPatient);
+                var patient = Mapper.Map<AddEditPatientViewModel, Patient>(editPatient);
                 var updated = _patientRepository.Update(patient);
 
                 if (updated)

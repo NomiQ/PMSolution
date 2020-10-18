@@ -1,0 +1,105 @@
+﻿@model PMSolution.Web.ViewModels.ClinicViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div style="padding-top: 40px;">
+    <h4>Clinic Management</h4>
+</div>
+
+<hr />
+
+<div class="container">
+    <div class="row">
+        <div class="card bg-transparent" style="width:auto;">
+            <div class="card-header bg-transparent"><h6>Clinic details</h6></div>
+            <div class="card-body">
+                @if (Model == null)
+                {
+                    <div>
+                        <p class="info">No clinic details exists, please add.</p>
+                    </div>
+                    @Html.ActionLink("Add clinic details", "AddClinic", "",
+                    new { @class = "btn btn-sm btn-outline-secondary" })
+                }
+                else
+                {
+                    <div style="padding-top:20px;">
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>@Model.Name</dd>
+                            <dt>Address</dt>
+                            <dd>@Model.Address</dd>
+                            <dt>Phone number</dt>
+                            <dd>@Model.PhoneNumber</dd>
+                            <dt>Fax</dt>
+                            <dd>@Model.FaxNumber</dd>
+                            <dt>Email</dt>
+                            <dd>@Model.Email</dd>
+                        </dl>
+                    </div>
+                    <div>
+                        @Html.ActionLink("Edit clinic details", "EditClinic", "Clinic", new { id = Model.Id },
+                        new { @class = "btn btn-sm btn-outline-secondary" })
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="card bg-transparent" style="width:auto; margin-top: 40px;">
+                <div class="card-header bg-transparent"><h6>Opening hours</h6></div>
+                <div class="card-body">
+                    @if (!Model.ClinicDays.Any())
+                    {
+                        <div>
+                            <p class="info">No clinic opening hours record exists, please add.</p>
+                        </div>
+                        @Html.ActionLink("Add clinic hours", "AddClinicDays", "Clinic", new { id = Model.Id },
+                        new { @class = "btn btn-sm btn-outline-secondary" })
+                    }
+                    else
+                    {
+                        <div class="table-responsive border">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Day</th>
+                                        <th scope="col">Open</th>
+                                        <th scope="col">Close</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var day in Model.ClinicDays)
+                                    {
+                                        <tr>
+                                            <td scope="row">@day.Day</td>
+                                            <td>@day.OpenTime</td>
+                                            <td>@day.CloseTime</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            @Html.ActionLink("Edit clinic details", "EditClinic", "",
+                            new { @class = "btn btn-sm btn-outline-secondary" })
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using PMSolution.Web.Domain;
 using PMSolution.Web.Enums;
 
 namespace PMSolution.Web.ViewModels

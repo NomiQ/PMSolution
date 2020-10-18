@@ -32,6 +32,14 @@ namespace PMSolution.Web.Services
             return patient;
         }
 
+        public List<Patient> SearchPatient(string surname, DateTime dob)
+        {
+            var patients = _appDbContext.Patients
+                                .Where(s => s.LastName == surname 
+                                        && s.DateOfBirth == dob).ToList();
+            return patients;
+        }
+
         public bool Create(Patient patient)
         {
             _appDbContext.Patients.Add(patient);

@@ -13,12 +13,10 @@ namespace PMSolution.Web.Controllers
     public class StaffManagementController : Controller
     {
         private readonly IStaffRepository _staffRepository;
-        private readonly IMapper _mapper;
 
-        public StaffManagementController(IStaffRepository staffRepository, IMapper mapper)
+        public StaffManagementController(IStaffRepository staffRepository)
         {
             _staffRepository = staffRepository;
-            _mapper = mapper;
         }
 
         public ActionResult Index()
@@ -38,7 +36,7 @@ namespace PMSolution.Web.Controllers
             var staff = _staffRepository.GetStaff(id);
             if (staff != null)
             {
-                var mapStaff = _mapper.Map<Staff, StaffViewModel>(staff);
+                var mapStaff = Mapper.Map<Staff, StaffViewModel>(staff);
                 return View(mapStaff);
             }
 
@@ -58,7 +56,7 @@ namespace PMSolution.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var staff = _mapper.Map<AddEditStaffViewModel, Staff>(staffRequest);
+                var staff = Mapper.Map<AddEditStaffViewModel, Staff>(staffRequest);
                 var created = _staffRepository.Create(staff);
 
                 if (created)
@@ -79,7 +77,7 @@ namespace PMSolution.Web.Controllers
             if (staff != null)
             {
                 // map to view model
-                var editStaff = _mapper.Map<Staff, AddEditStaffViewModel>(staff);
+                var editStaff = Mapper.Map<Staff, AddEditStaffViewModel>(staff);
 
                 return View(editStaff);
             }
@@ -94,7 +92,7 @@ namespace PMSolution.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var staff = _mapper.Map<AddEditStaffViewModel, Staff>(editStaff);
+                var staff = Mapper.Map<AddEditStaffViewModel, Staff>(editStaff);
                 var updated = _staffRepository.Update(staff);
 
                 if (updated)

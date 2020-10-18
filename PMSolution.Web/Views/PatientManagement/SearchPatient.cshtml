@@ -1,0 +1,102 @@
+﻿@model PMSolution.Web.ViewModels.SearchPatientsViewModel
+@{
+    ViewBag.Title = "Search Patient";
+}
+
+<div style="padding-top: 40px;">
+    <h4>Search Patients</h4>  
+</div>
+
+<hr />
+
+@using (Html.BeginForm("SearchPatient", "PatientManagement", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+<div class="col-md-8">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="table-responsive border rounded  border-top-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Surname</th>
+                        <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.DateOfBirth, new
+                       {
+                           htmlAttributes = new
+                           {
+                               @class = "form-control datepicker", @type="date"
+                           }
+                       })
+                            @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-top:none">
+                        </td>
+                        <td class="text-right" style="border-top:none">
+                            <input type="submit" class="btn btn-sm btn-primary" value="Search" />
+                            <a class="btn btn-sm btn-outline-primary">Clear</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+}
+
+
+@if (Model.SearchPatients != null)
+{
+    <div style="padding-top: 20px;">
+        <div class="table-responsive border">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date of birth</th>
+                    <th scope="col">Phone number</th>
+                    <th scope="col" class="text-center">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var patient in Model.SearchPatients)
+                {
+                    <tr>
+                        <td scope="row">@($"{patient.FirstName} {patient.LastName}")</td>
+                        <td>@patient.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                        <td>@patient.PhoneNumber</td>
+                        <td>
+                            <div class="row justify-content-center">
+                                <div>
+                                    @Html.ActionLink("Book Appointment", "AddAppointment", "Appointment", new { id = patient.Id },
+                                    new { @class = "btn btn-sm btn-outline-success" })
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    </div>
+}
+
+else
+{
+    <div>
+        <p class="text-info">No patient record exist in the system!</p>
+    </div>
+}

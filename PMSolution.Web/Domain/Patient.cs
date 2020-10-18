@@ -17,5 +17,8 @@ namespace PMSolution.Web.Domain
         public string CNIC { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
+
+
+        public List<Appointment> Appointments { get; set; }
     }
 }

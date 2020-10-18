@@ -33,6 +33,9 @@ namespace PMSolution.Web.Models
 
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Staff> Staffs { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Clinic> Clinics { get; set; }
+        public DbSet<ClinicDay> ClinicDays { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -41,6 +44,7 @@ namespace PMSolution.Web.Models
             // fluent API configuration
             modelBuilder.Entity<Patient>().Property(c => c.DateOfBirth).HasColumnType("date");
             modelBuilder.Entity<Staff>().Property(c => c.DateOfBirth).HasColumnType("date");
+            modelBuilder.Entity<Appointment>().Property(c => c.Date).HasColumnType("date");
         }
     }
 }

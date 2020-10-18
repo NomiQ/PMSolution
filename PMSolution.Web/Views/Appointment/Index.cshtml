@@ -1,0 +1,71 @@
+﻿@model PMSolution.Web.ViewModels.AppointmentsViewModel
+@{
+    ViewBag.Title = "Appointments";
+}
+
+
+<div class="row" style="padding-top: 40px;">
+    <div class="col-md-6">
+        <h4>Appointments</h4>
+    </div>
+    <div class="col-md-6 justify-content-end"> 
+        <h5 style="text-align:end;">@DateTime.Today.DayOfWeek - @DateTime.Today.ToShortDateString()</h5>
+    </div>
+</div>
+    
+
+<hr />
+
+<div class="container">
+    <div class="row" style="padding-top: 20px;">
+        <div class="col-md-7">
+            @Html.ActionLink("New appointment", "SearchPatient", "PatientManagement", null, new { @class = "btn btn-outline-secondary" })
+        </div>
+        <div class="col-md-5 justify-content-end">
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Patient name / MRN">
+                <button class="btn btn-sm btn-outline-primary" style="" type="submit">Search patient</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" style="padding-top: 20px;">
+        <div class="col-md-7"> <h5>Today's Appointments</h5></div>
+    </div>
+
+
+    @if (Model.Appointments != null)
+    {
+        <div class="row" style="padding-top: 20px;">
+            <div class="table-responsive border rounded  border-top-0">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Birth date</th>
+                        <th>Phone no.</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    <tbody>
+                        @foreach (var app in Model.Appointments)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+    <p>No appointments found</p>
+    }
+</div>
+
+
+

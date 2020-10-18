@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using AutoMapper;
 using PMSolution.Web.Enums;
 
 namespace PMSolution.Web.Domain
@@ -18,5 +20,7 @@ namespace PMSolution.Web.Domain
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
 
+
+        public List<Appointment> Appointments { get; set; }
     }
 }
