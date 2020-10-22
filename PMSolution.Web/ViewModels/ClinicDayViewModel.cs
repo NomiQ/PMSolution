@@ -13,7 +13,7 @@ namespace PMSolution.Web.ViewModels
         public int Id { get; set; }
 
         [Required]
-        public string Day { get; set; }
+        public WeekDays Day { get; set; }
 
         [Required]
         public string StartTimeHour { get; set; }
@@ -35,7 +35,7 @@ namespace PMSolution.Web.ViewModels
 
         public int ClinicId { get; set; }
 
-        public IEnumerable<SelectListItem> Days { get; set; }
+        public IEnumerable<SelectListItem> RemainingDays { get; set; }
         public IEnumerable<SelectListItem> Hours { get; set; }
         public IEnumerable<SelectListItem> Minutes { get; set; }
         public IEnumerable<SelectListItem> AMPM { get; set; }

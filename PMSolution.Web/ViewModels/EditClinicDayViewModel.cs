@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PMSolution.Web.Enums;
 
 namespace PMSolution.Web.ViewModels
 {
@@ -10,7 +11,7 @@ namespace PMSolution.Web.ViewModels
     {
         public int Id { get; set; }
 
-        public string Day { get; set; }
+        public WeekDays Day { get; set; }
 
         public string StartTimeHour { get; set; }
 

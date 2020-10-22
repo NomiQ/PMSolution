@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PMSolution.Web.Domain;
+using PMSolution.Web.Enums;
 
 namespace PMSolution.Web.Services
 {
@@ -13,9 +14,8 @@ namespace PMSolution.Web.Services
         bool DeleteClinic(Clinic clinic);
 
 
-        bool IsClinicDay(string day);
         ClinicDay GetClinicDay(int id);
-        List<string> GetClinicDays(int id);
+        IEnumerable<WeekDays> GetClinicDays(int id);
         bool AddClinicDay(ClinicDay clinicDay);
         bool UpdateClinicDay(ClinicDay clinicDay);
         bool DeleteClinicDay(ClinicDay clinicDay);

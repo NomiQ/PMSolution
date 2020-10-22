@@ -22,7 +22,7 @@
                 <h6 class="col-form-label">Day</h6>
             </div>
             <div class="col-md-6">
-                @Html.EnumDropDownListFor(model => model.Day, Model.Days, "Select day", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.Day, Model.RemainingDays, "Select", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Day, "", new { @class = "text-danger" })
             </div>
         </div>

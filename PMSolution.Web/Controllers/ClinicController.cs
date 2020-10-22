@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using PMSolution.Web.Domain;
+using PMSolution.Web.Enums;
 using PMSolution.Web.Models;
 using PMSolution.Web.Services;
 using PMSolution.Web.ViewModels;
@@ -27,9 +28,18 @@ namespace PMSolution.Web.Controllers
 
             if (clinic != null)
             {
-                var mapClinic = Mapper.Map<Clinic, ClinicViewModel>(clinic);
+                var clinicViewModel = new ClinicViewModel()
+                {
+                    Id = clinic.Id,
+                    Name = clinic.Name,
+                    PhoneNumber = clinic.PhoneNumber,
+                    Address = clinic.Address,
+                    FaxNumber = clinic.FaxNumber,
+                    // ensure days are in order
+                    ClinicDays = clinic.ClinicDays.OrderBy(s => (int)(s.Day)).ToList()
+                };
                 
-                return View(mapClinic);
+                return View(clinicViewModel);
             }
 
             return View();
@@ -120,29 +130,50 @@ namespace PMSolution.Web.Controllers
             return HttpNotFound();
         }
 
-
         [HttpGet]
         public ActionResult AddClinicDays(int id)
         {
+            // get existing days
             var existingDays = _clinicRepository.GetClinicDays(id);
-            var weekDays = new List<string>() { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-       
-            var daysList = new List<SelectListItem>();
 
-            // ignore existing days
-            foreach (var day in weekDays)
-            {   
-                if (!existingDays.Contains(day))
+            IEnumerable<SelectListItem> existingDaysList = existingDays.Select(s => new SelectListItem
+            {
+                Text = s.ToString(),
+                Value = ((int)s).ToString()
+            });
+
+            // convert enum to selectListItem
+            var enumList = Enum.GetValues(typeof(WeekDays)).Cast<WeekDays>().Select(s => new SelectListItem
+            {
+                Text = s.ToString(),
+                Value = ((int)s).ToString()
+            });
+
+            // list to filter existing days
+            List<SelectListItem> remainingDaysList = new List<SelectListItem>();
+
+            // loop through to filter existing days
+            foreach (var day in enumList)
+            {
+                if (!existingDaysList.Any(s => s.Value == day.Value))
                 {
-                    daysList.Add(new SelectListItem { Value = day, Text = day });
+                    remainingDaysList.Add(day);
                 }
             }
+
+            // reconstruct IEnumerable select list to display in view
+            IEnumerable<SelectListItem> remainingDays = remainingDaysList.Select(s => new SelectListItem
+            {
+                Text = s.Text,
+                Value = s.Value
+            });
 
             // create clinic day
             var clinicDays = new ClinicDayViewModel()
             {
+                // copy remaining days
+                RemainingDays = remainingDays,
                 ClinicId = id,
-                Days = daysList,
                 Hours = new List<SelectListItem>
                 {
                     new SelectListItem { Value = "1", Text = "01" },

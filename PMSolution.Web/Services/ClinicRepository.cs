@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using PMSolution.Web.Domain;
+using PMSolution.Web.Enums;
 using PMSolution.Web.Models;
 
 namespace PMSolution.Web.Services
@@ -28,11 +29,10 @@ namespace PMSolution.Web.Services
 
         public Clinic GetClinic(int id)
         {
-            // TODO.. enusre days are returned in order
             var clinic = _appDbContext.Clinics
-                            .Include(s => s.ClinicDays)                                                     
+                            .Include(s => s.ClinicDays)                                                
                             .FirstOrDefault();
-            //.Include(s => s.ClinicDays.OrderBy(o => o.Day).AsEnumerable())
+            
             return clinic;
         }
 
@@ -81,14 +81,6 @@ namespace PMSolution.Web.Services
             return removed > 0;
         }
 
-
-        public bool IsClinicDay(string day)
-        {
-            var exists = _appDbContext.ClinicDays
-                            .Any(s => s.Day == day);
-            return exists;
-        }
-
         public ClinicDay GetClinicDay(int id)
         {
             var clinicDay = _appDbContext.ClinicDays
@@ -97,7 +89,7 @@ namespace PMSolution.Web.Services
             return clinicDay;
         }
 
-        public List<string> GetClinicDays(int id)
+        public IEnumerable<WeekDays> GetClinicDays(int id)
         {
             var days = _appDbContext.ClinicDays
                             .Where(s => s.ClinicId == id)
