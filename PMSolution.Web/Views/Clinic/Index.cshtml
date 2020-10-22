@@ -12,66 +12,83 @@
 
 <div class="container">
     <div class="row">
-        <div class="card bg-transparent" style="width:auto;">
-            <div class="card-header bg-transparent"><h6>Clinic details</h6></div>
-            <div class="card-body">
+        <div class="col-md-3">
+            <div style="padding-top:25px;">
+                <h5>Clinic Details</h5>
+
+            </div>
+            <div>
                 @if (Model == null)
                 {
                     <div>
                         <p class="info">No clinic details exists, please add.</p>
                     </div>
                     @Html.ActionLink("Add clinic details", "AddClinic", "",
-                    new { @class = "btn btn-sm btn-outline-secondary" })
+                    new { @class = "btn btn-sm btn-success" })
                 }
                 else
                 {
-                    <div style="padding-top:20px;">
+                    <div>
                         <dl>
-                            <dt>Name</dt>
+                            <dt style="color:black; font-weight:bold;">Name</dt>
                             <dd>@Model.Name</dd>
-                            <dt>Address</dt>
+                            <dt style="color:black; font-weight:bold;">Address</dt>
                             <dd>@Model.Address</dd>
-                            <dt>Phone number</dt>
+                            <dt style="color:black; font-weight:bold;">Phone number</dt>
                             <dd>@Model.PhoneNumber</dd>
-                            <dt>Fax</dt>
+                            <dt style="color:black; font-weight:bold;">Fax</dt>
                             <dd>@Model.FaxNumber</dd>
-                            <dt>Email</dt>
+                            <dt style="color:black; font-weight:bold;">Email</dt>
                             <dd>@Model.Email</dd>
                         </dl>
                     </div>
-                    <div>
-                        @Html.ActionLink("Edit clinic details", "EditClinic", "Clinic", new { id = Model.Id },
-                        new { @class = "btn btn-sm btn-outline-secondary" })
+                    <div class="row justify-content-center">
+                        <div style="padding-right:5px;">
+                            @Html.ActionLink("Edit clinic", "EditClinic", "Clinic", new { id = Model.Id },
+                            new { @class = "btn btn-sm btn-success"})
+                        </div>
+                        <div>
+                            @Html.ActionLink("Delete", "DeleteClinic", "Clinic", new { id = Model.Id },
+                            new { @class = "btn btn-sm btn-danger" })
+                        </div>
                     </div>
                 }
-
             </div>
         </div>
-    </div>
-    @if (Model != null)
-    {
-        <div class="row">
-            <div class="card bg-transparent" style="width:auto; margin-top: 40px;">
-                <div class="card-header bg-transparent"><h6>Opening hours</h6></div>
-                <div class="card-body">
+        <div class="col-md-9 border-0">
+            @if (Model != null)
+            {
+                <div class="row">
+                    <div class="col-md border-0" style="padding-top:30px;">
+                        <h5>Opening hours</h5>
+                    </div>
+                    @if (Model.ClinicDays.Count < 7)
+                    {
+                        <div class="col-md border-0 text-right" style="padding-top:15px;">
+                            <div>
+                                @Html.ActionLink("Add opening day", "AddClinicDays", "Clinic", new { id = Model.Id },
+                                new { @class = "btn btn-sm btn-success" })
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row">
                     @if (!Model.ClinicDays.Any())
                     {
                         <div>
                             <p class="info">No clinic opening hours record exists, please add.</p>
                         </div>
-                        @Html.ActionLink("Add clinic hours", "AddClinicDays", "Clinic", new { id = Model.Id },
-                        new { @class = "btn btn-sm btn-outline-secondary" })
                     }
                     else
                     {
                         <div class="table-responsive border">
-                            <table class="table">
+                            <table class="table table-sm">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Day</th>
-                                        <th scope="col">Open</th>
-                                        <th scope="col">Close</th>
-
+                                        <th class="border-top-0">Day</th>
+                                        <th class="border-top-0">Open</th>
+                                        <th class="border-top-0">Close</th>
+                                        <th class="border-top-0" style="text-align:center;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -81,25 +98,27 @@
                                             <td scope="row">@day.Day</td>
                                             <td>@day.OpenTime</td>
                                             <td>@day.CloseTime</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <div style="padding-right:10px;">
+                                                        @Html.ActionLink("Edit", "EditClinicDay", "Clinic", new { id = day.Id },
+                                                        new { @class = "text-info" })
+                                                    </div>
+                                                    <div>
+                                                        @Html.ActionLink("Delete", "DeleteClinicDay", "Clinic", new { id = day.Id },
+                                                        new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     }
 
                                 </tbody>
                             </table>
                         </div>
-                        <div>
-                            @Html.ActionLink("Edit clinic details", "EditClinic", "",
-                            new { @class = "btn btn-sm btn-outline-secondary" })
-                        </div>
                     }
-
                 </div>
-            </div>
+            }   
         </div>
-    }
-
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

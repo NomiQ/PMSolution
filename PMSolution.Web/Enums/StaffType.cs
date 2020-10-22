@@ -7,8 +7,8 @@ namespace PMSolution.Web.Enums
 {
     public enum StaffType
     {
-        Admin = 1,
-        Doctor = 2,
-        Receptionist = 3
+        Admin,
+        Doctor,
+        Receptionist
     }
 }

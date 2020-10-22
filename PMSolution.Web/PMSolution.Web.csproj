@@ -282,6 +282,7 @@
     <Compile Include="ViewModels\AppointmentViewModel.cs" />
     <Compile Include="ViewModels\ClinicDayViewModel.cs" />
     <Compile Include="ViewModels\ClinicViewModel.cs" />
+    <Compile Include="ViewModels\EditClinicDayViewModel.cs" />
     <Compile Include="ViewModels\PatientSurnameDOBViewModel.cs" />
     <Compile Include="ViewModels\PatientsViewModel.cs" />
     <Compile Include="ViewModels\PatientViewModel.cs" />
@@ -475,6 +476,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Clinic\EditClinic.cshtml" />
     <Content Include="Views\Clinic\AddClinicDays.cshtml" />
+    <Content Include="Views\Clinic\EditClinicDay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

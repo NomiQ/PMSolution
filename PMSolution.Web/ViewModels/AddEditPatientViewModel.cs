@@ -16,8 +16,7 @@ namespace PMSolution.Web.ViewModels
         public string MRN { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Please select gender")]
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         [Required]
         [MaxLength(255)]

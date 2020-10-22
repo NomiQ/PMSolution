@@ -13,12 +13,10 @@ namespace PMSolution.Web.ViewModels
         public int Id { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Please select gender")]
-        public StaffType Type { get; set; }
+        public StaffType? Type { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Please select gender")]
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         [Required]
         [MaxLength(255)]

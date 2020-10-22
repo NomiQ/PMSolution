@@ -19,13 +19,24 @@ namespace PMSolution.Web.Services
 
         public Clinic GetClinic()
         {
-            var clinic = _appDbContext.Clinics.FirstOrDefault();
+            var clinic = _appDbContext.Clinics
+                            .Include(s => s.ClinicDays)
+                            .FirstOrDefault();
+
+                return clinic;
+        }
+
+        public Clinic GetClinic(int id)
+        {
+            // TODO.. enusre days are returned in order
+            var clinic = _appDbContext.Clinics
+                            .Include(s => s.ClinicDays)                                                     
+                            .FirstOrDefault();
+            //.Include(s => s.ClinicDays.OrderBy(o => o.Day).AsEnumerable())
             return clinic;
         }
 
-        
-
-        public Clinic GetClinicDetails(int id)
+        public Clinic GetClinicDetailsOnly(int id)
         {
             var clinic = _appDbContext.Clinics
                             .FirstOrDefault(s => s.Id == id);
@@ -61,7 +72,7 @@ namespace PMSolution.Web.Services
             return updated > 0;
         }
 
-        public bool Delete(Clinic clinic)
+        public bool DeleteClinic(Clinic clinic)
         {
             // remove clinic
             _appDbContext.Clinics.Remove(clinic);
@@ -78,6 +89,23 @@ namespace PMSolution.Web.Services
             return exists;
         }
 
+        public ClinicDay GetClinicDay(int id)
+        {
+            var clinicDay = _appDbContext.ClinicDays
+                                .FirstOrDefault(s => s.Id == id);
+
+            return clinicDay;
+        }
+
+        public List<string> GetClinicDays(int id)
+        {
+            var days = _appDbContext.ClinicDays
+                            .Where(s => s.ClinicId == id)
+                            .Select(d => d.Day)
+                            .ToList();
+            return days;
+        }
+
         public bool AddClinicDay(ClinicDay clinicDay)
         {
             _appDbContext.ClinicDays.Add(clinicDay);
@@ -85,6 +113,38 @@ namespace PMSolution.Web.Services
 
             return added > 0;
         }
+
+        public bool UpdateClinicDay(ClinicDay clinicDay)
+        {
+            var editClinicDay = _appDbContext.ClinicDays
+                                .FirstOrDefault(s => s.Id == clinicDay.Id);
+
+            if (editClinicDay != null)
+            {
+                // set state to modify
+                _appDbContext.Entry(editClinicDay).State = EntityState.Modified;
+
+                editClinicDay.Day = clinicDay.Day;
+                editClinicDay.OpenTime = clinicDay.OpenTime;
+                editClinicDay.CloseTime = clinicDay.CloseTime;
+                editClinicDay.ClinicId = clinicDay.ClinicId;
+            }
+
+            var updated = _appDbContext.SaveChanges();
+            
+            return updated > 0;
+        }
+
+        public bool DeleteClinicDay(ClinicDay clinicDay)
+        {
+            // remove clinic day
+            _appDbContext.ClinicDays.Remove(clinicDay);
+            var removed = _appDbContext.SaveChanges();
+
+            return removed > 0;
+        }
+
+
 
     }
 }
