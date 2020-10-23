@@ -25,11 +25,12 @@ namespace PMSolution.Web.Controllers
             _patientRepository = patientRepository;
             _staffRepository = staffRepository;
         }
-        public ActionResult Index()
+        public ActionResult Index(DateTime date)
         {
-            var appointments = _appointmentRepository.Appointments.ToList();
-            var appointmentList = new AppointmentsViewModel();
-            
+            // get appoitnemts for the required date
+            var appointments = _appointmentRepository.GetSelectedAppointments(date).ToList();
+            var appointmentList = new List<AppointmentViewModel>();
+
             if (appointments.Count > 0)
             {
                 foreach (var app in appointments)
@@ -40,20 +41,26 @@ namespace PMSolution.Web.Controllers
                     {
                         Id = app.Id,
                         Date = app.Date,
-                        StartTimeHour = app.StartTime,
-                        EndTimeHour = app.EndTime,
+                        StartTime = app.StartTime,
+                        EndTime = app.EndTime,
                         PatientId = patient.Id,
                         FirstName = patient.FirstName,
-                        LastName = patient.LastName, 
+                        LastName = patient.LastName,
                         PhoneNumber = patient.PhoneNumber,
-                        DateOfBirth = patient.DateOfBirth
+                        DateOfBirth = patient.DateOfBirth,
+                        CNIC = patient.CNIC
                     };
-
-                    appointmentList.Appointments.Add(appDetail);
+                    appointmentList.Add(appDetail);
                 }
             }
 
-            return View(appointmentList);
+            var model = new AppointmentsViewModel()
+            {
+                Date = date,
+                AllAppointments = appointmentList
+            };
+
+            return View(model);
         }
 
         [HttpGet]
@@ -149,5 +156,6 @@ namespace PMSolution.Web.Controllers
             return View();
             
         }
+
     }
 }

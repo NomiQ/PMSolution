@@ -3,56 +3,86 @@
     ViewBag.Title = "Appointments";
 }
 
-
 <div class="row" style="padding-top: 40px;">
-    <div class="col-md-6">
+    <div class="col-md-3">
         <h4>Appointments</h4>
     </div>
-    <div class="col-md-6 justify-content-end"> 
+    <div class="col-md-3">
+        @Html.ActionLink("Add new appointment", "SearchPatient", "PatientManagement", null, new { @class = "btn btn-sm btn-success" })
+    </div>
+    <div class="col-md-6 justify-content-end">
         <h5 style="text-align:end;">@DateTime.Today.DayOfWeek - @DateTime.Today.ToShortDateString()</h5>
     </div>
 </div>
-    
 
 <hr />
 
 <div class="container">
-    <div class="row" style="padding-top: 20px;">
-        <div class="col-md-7">
-            @Html.ActionLink("New appointment", "SearchPatient", "PatientManagement", null, new { @class = "btn btn-outline-secondary" })
+
+    @using (Html.BeginForm("Index", "Appointment", FormMethod.Post))
+    {
+        <div class="row" style="padding-top:20px;">
+            <div class="col-md-2 w-auto" style="text-align:end">
+                @Html.LabelFor(model => model.Date, new { @class = "col-form-label" })
+            </div>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                <input type="submit" class="btn btn-sm btn-outline-primary" value="View appointments" />
+            </div>
         </div>
-        <div class="col-md-5 justify-content-end">
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Patient name / MRN">
+    }
+
+    <div class="row" style="padding-top:75px;">
+        <div class="col-md-4">
+            <h5 style="text-align:start;">@Model.Date.DayOfWeek - @Model.Date.ToShortDateString()</h5>
+        </div>
+        @if (Model.AllAppointments.Any())
+        {
+            <div class="offset-3 col-md-3">
+                <input class="form-control mr-sm-2" type="text" placeholder="Patient MRN">
+            </div>
+            <div class="col-md-2">
                 <button class="btn btn-sm btn-outline-primary" style="" type="submit">Search patient</button>
-            </form>
-        </div>
-    </div>
-
-    <div class="row" style="padding-top: 20px;">
-        <div class="col-md-7"> <h5>Today's Appointments</h5></div>
+            </div>
+        }
     </div>
 
 
-    @if (Model.Appointments != null)
+    @if (Model.AllAppointments.Any())
     {
         <div class="row" style="padding-top: 20px;">
-            <div class="table-responsive border rounded  border-top-0">
+            <div class="table-responsive border rounded border-top-0">
                 <table class="table">
                     <tr>
                         <th>Name</th>
                         <th>Birth date</th>
-                        <th>Phone no.</th>
-                        <th>Actions</th>
+                        <th>CNIC</th>
+                        <th>Start time</th>
+                        <th>End time</th>
+                        <th style="text-align:center;">Actions</th>
                     </tr>
 
                     <tbody>
-                        @foreach (var app in Model.Appointments)
+                        @foreach (var app in Model.AllAppointments)
                         {
                             <tr>
+                                <td scope="row">@($"{app.FirstName} {app.LastName}")</td>
+                                <td>@app.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                                <td>@app.CNIC</td>
+                                <td>@app.StartTime</td>
+                                <td>@app.EndTime</td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                    <div class="row justify-content-center">
+                                        <div style="padding-right:10px;">
+                                            @Html.ActionLink("Edit", "Edit", new { id = app.Id }, new { @class = "text-info" })
+                                        </div>
+                                        <div>
+                                            @Html.ActionLink("Delete", "Delete", new { id = app.Id }, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -63,7 +93,7 @@
     }
     else
     {
-    <p>No appointments found</p>
+        <p>No appointments found</p>
     }
 </div>
 

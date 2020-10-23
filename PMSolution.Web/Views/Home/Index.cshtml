@@ -22,7 +22,7 @@
                         <i class="fa fa-calendar fa-2x" style="color:#2C3E50"></i>
                     </div>
                     <div class="row justify-content-center">
-                        @Html.ActionLink("Appointments", "Index", "Appointment", null,
+                        @Html.ActionLink("Appointments", "Index", "Appointment", new { date = DateTime.Now },
                         new { @class = "stretched-link", style = "font-size:larger;font-weight:bold;text-decoration:none;color:#2C3E50" })
                     </div>
                 </div>

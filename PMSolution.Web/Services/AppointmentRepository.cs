@@ -24,6 +24,14 @@ namespace PMSolution.Web.Services
             }
         }
 
+        public List<Appointment> GetSelectedAppointments(DateTime date)
+        {
+            var appointments = _appDbContext.Appointments
+                                    .Where(s => s.Date == date)
+                                    .ToList();
+            return appointments;
+        }
+
         //public bool CheckAppointmentTime(DateTime date, string sTime, string eTime)
         //{
         //    var exists = _appDbContext.Appointments

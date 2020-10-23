@@ -35,10 +35,13 @@ namespace PMSolution.Web.ViewModels
 
         public string EndAMPM { get; set; }
 
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
 
         public int PatientId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string CNIC { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
 
