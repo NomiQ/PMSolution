@@ -75,12 +75,12 @@
                 {
                     <tr>
                         <td scope="row">@($"{patient.FirstName} {patient.LastName}")</td>
-                        <td>@patient.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                        <td>@patient.DateOfBirth.ToString("dd/MM/yyyy")</td>
                         <td>@patient.PhoneNumber</td>
                         <td>
                             <div class="row justify-content-center">
                                 <div>
-                                    @Html.ActionLink("Book Appointment", "AddAppointment", "Appointment", new { id = patient.Id },
+                                    @Html.ActionLink("Book Appointment", "SelectAppointmentDate", "Appointment", new { id = patient.Id },
                                     new { @class = "btn btn-sm btn-outline-success" })
                                 </div>
 

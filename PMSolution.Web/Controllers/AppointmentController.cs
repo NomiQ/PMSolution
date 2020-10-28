@@ -8,6 +8,7 @@ using PMSolution.Web.Domain;
 using PMSolution.Web.Services;
 using PMSolution.Web.ViewModels;
 using Microsoft.AspNet.Identity;
+using PMSolution.Web.Enums;
 
 namespace PMSolution.Web.Controllers
 {
@@ -16,19 +17,26 @@ namespace PMSolution.Web.Controllers
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IPatientRepository _patientRepository;
         private readonly IStaffRepository _staffRepository;
+        private readonly IClinicRepository _clinicRepository;
 
         public AppointmentController(IAppointmentRepository appointmentRepository, 
                                         IPatientRepository patientRepository,
-                                        IStaffRepository staffRepository)
+                                        IStaffRepository staffRepository,
+                                        IClinicRepository clinicRepository)
         {
             _appointmentRepository = appointmentRepository;
             _patientRepository = patientRepository;
             _staffRepository = staffRepository;
+            _clinicRepository = clinicRepository;
         }
         public ActionResult Index(DateTime date)
         {
+            // if date is null, store todays date.. not required (but safe to keep in)
+            var todaysDate = DateTime.Today.Date;
+            DateTime actualDate = date == null ? todaysDate : date;
+
             // get appoitnemts for the required date
-            var appointments = _appointmentRepository.GetSelectedAppointments(date).ToList();
+            var appointments = _appointmentRepository.GetSelectedAppointments(actualDate).ToList();
             var appointmentList = new List<AppointmentViewModel>();
 
             if (appointments.Count > 0)
@@ -56,7 +64,7 @@ namespace PMSolution.Web.Controllers
 
             var model = new AppointmentsViewModel()
             {
-                Date = date,
+                Date = actualDate,
                 AllAppointments = appointmentList
             };
 
@@ -64,74 +72,102 @@ namespace PMSolution.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddAppointment(int id)
+        public ActionResult SelectAppointmentDate(int id)
         {
             var patient = _patientRepository.GetPatient(id);
+            
             if (patient != null)
             {
-                //add patient details to appointment view model
-                var createAppointment = new AppointmentViewModel
+                var model = new SelectAppointmentDateViewModel
+                {
+                    PatientId = patient.Id,
+                    FirstName = patient.FirstName,
+                    LastName = patient.LastName,
+                    DateOfBirth = patient.DateOfBirth,
+                    PhoneNumber = patient.PhoneNumber
+                };
+
+                return View(model);
+            }
+
+            return HttpNotFound();
+        }
+
+        [HttpPost]
+        public ActionResult SelectAppointmentDate(SelectAppointmentDateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var day = model.Date.DayOfWeek.ToString();
+
+                var enumDay = (WeekDays)Enum.Parse(typeof(WeekDays), day);
+                // check if clinic is open on the date
+                var clinicIsOpen = _clinicRepository
+                                        .CheckDayExists(enumDay);
+                if (clinicIsOpen)
+                {
+                    return RedirectToAction("AvailableAppointments", new { id = model.PatientId, date = model.Date });
+                }
+                else
+                {
+                    ModelState.AddModelError("Date", $"Clinic is not open on {model.Date.DayOfWeek}");
+                    return View(model);
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult AvailableAppointments(int id, DateTime date)
+        {
+            if (ModelState.IsValid)
+            {
+                // get patient
+                var patient = _patientRepository.GetPatient(id);
+
+                //get clinic info
+                var clinic = _clinicRepository.GetClinic();
+
+                // get availabe list of appointmets for selected date
+                var appointments = _appointmentRepository
+                                        .GetAvailableAppointments(date, clinic.Id);
+
+                var appointmentsList = new List<SelectListItem>();
+
+                foreach (var app in appointments)
+                {
+                    appointmentsList.Add(new SelectListItem { Value = app.StartTime, Text = app.StartTime });
+                }
+
+                // construct model
+                BookAppointmentViewModel bookAppointmentModel = new BookAppointmentViewModel()
                 {
                     PatientId = patient.Id,
                     FirstName = patient.FirstName,
                     LastName = patient.LastName,
                     DateOfBirth = patient.DateOfBirth,
                     PhoneNumber = patient.PhoneNumber,
-                    Hours = new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "1", Text = "01:00" },
-                        new SelectListItem { Value = "2", Text = "02:00" },
-                        new SelectListItem { Value = "3", Text = "03:00" },
-                        new SelectListItem { Value = "4", Text = "04:00" },
-                        new SelectListItem { Value = "5", Text = "05:00" },
-                        new SelectListItem { Value = "6", Text = "06:00" },
-                        new SelectListItem { Value = "7", Text = "07:00" },
-                        new SelectListItem { Value = "8", Text = "08:00" },
-                        new SelectListItem { Value = "9", Text = "09:00" },
-                        new SelectListItem { Value = "10", Text = "10:00" },
-                        new SelectListItem { Value = "11", Text = "11:00" },
-                        new SelectListItem { Value = "12", Text = "12:00" }
-                    },
-                    Minutes = new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "60", Text = "00" },
-                        new SelectListItem { Value = "05", Text = "05" },
-                        new SelectListItem { Value = "10", Text = "10" },
-                        new SelectListItem { Value = "15", Text = "15" },
-                        new SelectListItem { Value = "20", Text = "20" },
-                        new SelectListItem { Value = "25", Text = "25" },
-                        new SelectListItem { Value = "30", Text = "30" },
-                        new SelectListItem { Value = "35", Text = "35" },
-                        new SelectListItem { Value = "40", Text = "40" },
-                        new SelectListItem { Value = "45", Text = "45" },
-                        new SelectListItem { Value = "50", Text = "50" },
-                        new SelectListItem { Value = "55", Text = "55" }
-                    },
-                    AMPM = new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "AM", Text = "AM" },
-                        new SelectListItem { Value = "PM", Text = "PM" }
-                    }
-                    
-
-                    
+                    Date = date,
+                    Appointments = appointmentsList
                 };
 
-                return View(createAppointment);
+                return View(bookAppointmentModel);
             }
 
-            return HttpNotFound("Patient details not found in the system"); 
+            return HttpNotFound();
+            
         }
 
         [HttpPost]
-        public ActionResult AddAppointment(AppointmentViewModel app)
+        public ActionResult AvailableAppointments(BookAppointmentViewModel app)
         {
-            // check if model is valid
+            //TODO... check why the date is not 
 
             if (ModelState.IsValid)
             {
-                var sTime = $"{app.StartTimeHour}:{app.StartTimeMin} {app.StartAMPM}";
-                var eTime = $"{app.EndTimeHour}:{app.EndTimeMin} {app.EndAMPM}";
+                var sTime = app.StartTime;
+                var eTime = app.EndTime;
                 string id = User.Identity.GetUserId();
 
                 var appointment = new Appointment()
@@ -139,23 +175,42 @@ namespace PMSolution.Web.Controllers
                     Date = app.Date,
                     StartTime = sTime,
                     EndTime = eTime,
-                    PatientId = app.PatientId
-                    //StaffId = staffId
+                    PatientId = app.PatientId,
+                    UserId = id
                 };
 
                 var created = _appointmentRepository.AddAppointment(appointment);
 
                 if (created)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { date = app.Date});
                 }
 
                 return HttpNotFound();
             }
 
-            return View();
-            
+            return RedirectToAction("AvailableAppointments", new { id = app.PatientId, date = app.Date });
         }
 
+        [HttpGet]
+        public ActionResult DeleteAppointment(int id)
+        {
+            var appointment = _appointmentRepository.GetAppointment(id);
+
+            if (appointment != null)
+            {
+                // delete appointment
+                var deleted = _appointmentRepository.DeleteAppointment(appointment);
+
+                if (deleted)
+                {
+                    return RedirectToAction("Index", new { date = appointment.Date });
+                }
+
+                return new HttpStatusCodeResult(400);
+            }
+
+            return HttpNotFound();
+        }
     }
 }

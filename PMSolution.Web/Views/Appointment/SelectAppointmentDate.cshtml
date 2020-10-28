@@ -1,0 +1,61 @@
+﻿@model PMSolution.Web.ViewModels.SelectAppointmentDateViewModel
+
+@{
+    ViewBag.Title = "SelectAppointmentDate";
+}
+
+<h2>BookAppointment</h2>
+
+<div class="container">
+    @using (Html.BeginForm("SelectAppointmentDate", "Appointment", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="border-bottom" style="padding-top:20px;"><h5>Patient detail</h5></div>
+                <div style="padding-top:20px;">
+                    <dl>
+                        <dt>Name</dt>
+                        <dd>@($"{Model.FirstName} {Model.LastName}")</dd>
+                        <dt>Date of birth</dt>
+                        <dd>@Model.DateOfBirth.ToString("dd/MM/yyyy")</dd>
+                        <dt>Phone number</dt>
+                        <dd>@Model.PhoneNumber</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="col-md-9 border-0">
+                <div style="padding-top:20px;">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.PatientId)
+                    @Html.HiddenFor(model => model.DateOfBirth)
+                    @Html.HiddenFor(model => model.PhoneNumber)
+                    @Html.HiddenFor(model => model.FirstName)
+                    @Html.HiddenFor(model => model.LastName)
+
+
+                    <div class="row" style="padding-top:20px;">
+                        <div class="col-md-3 w-auto" style="text-align:end">
+                            @Html.LabelFor(model => model.Date, new { @class = "col-form-label" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                            @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="row" style="padding-top:50px;">
+                        <div class="offset-2 col-md-2" style="text-align:right;">
+                            @Html.ActionLink("Back", "Index", new { date = DateTime.Today.Date }, new { @class = "btn btn-sm btn-outline-primary" })
+                        </div>
+                        <div class="col-md-2" style="padding-left:0px;">
+                            <input type="submit" class="btn btn-sm btn-outline-success" value="View available appointments" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

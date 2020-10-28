@@ -25,6 +25,8 @@ namespace PMSolution.Web.ViewModels
 
         public string EndAMPM { get; set; }
 
+        public string customError { get; set; }
+
         public int ClinicId { get; set; }
 
         public IEnumerable<SelectListItem> Hours { get; set; }

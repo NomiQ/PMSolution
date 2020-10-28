@@ -1,0 +1,79 @@
+﻿@model PMSolution.Web.ViewModels.BookAppointmentViewModel
+
+@{
+    ViewBag.Title = "AvailableAppointments";
+}
+
+    <div style="padding-top: 40px;">
+        <h4>Choose appointment</h4>
+    </div>
+
+    <div class="container">
+        @using (Html.BeginForm("AvailableAppointments", "Appointment", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.PatientId)
+            @Html.HiddenFor(model => model.DateOfBirth)
+            @Html.HiddenFor(model => model.PhoneNumber)
+            @Html.HiddenFor(model => model.FirstName)
+            @Html.HiddenFor(model => model.LastName)
+            @Html.HiddenFor(model => model.Date)
+
+            <div class="row">
+                <div class="col-md-3 border-right">
+                    <div class="border-bottom" style="padding-top:20px;"><h5>Patient detail</h5></div>
+                    <div style="padding-top:20px;">
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>@($"{Model.FirstName} {Model.LastName}")</dd>
+                            <dt>Date of birth</dt>
+                            <dd>@Model.DateOfBirth.ToString("dd/MM/yyyy")</dd>
+                            <dt>Phone number</dt>
+                            <dd>@Model.PhoneNumber</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="col-md-9 border-0">
+                    <div style="padding-top:20px;">
+
+                        <div class="row" style="padding-top:20px;">
+                            <div class="col-md-3 w-auto" style="text-align:end">
+                                <p>Appointment date</p>
+                            </div>
+                            <div class="col-md-3">
+                                @Model.Date.ToString("dd/MM/yyyy")
+                                @Html.HiddenFor(model => model.Date)
+                            </div>
+                        </div>
+                        @if (Model.Appointments.Any())
+                        {
+                            <div class="row" style="padding-top:20px;">
+                                <div class="col-md-3 w-auto" style="text-align:end">
+                                    @Html.LabelFor(model => model.StartTime, new { @class = "col-form-label" })
+                                </div>
+                                <div class="col-md-7 w-auto">
+                                    @Html.DropDownListFor(model => model.StartTime, Model.Appointments, new { @class = "form-control w-auto" })
+                                    @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div>
+                                <p class="text-info">No appointments available for selected day</p>
+                            </div>
+                        }
+
+                        @*add a cancel button here*@
+                        <div class="offset-5 col-sm-2" style="padding-top:50px;">
+                            <input type="submit" class="btn btn-outline-success" value="Book" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>

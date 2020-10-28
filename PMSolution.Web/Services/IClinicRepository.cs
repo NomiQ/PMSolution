@@ -15,7 +15,9 @@ namespace PMSolution.Web.Services
 
 
         ClinicDay GetClinicDay(int id);
+        bool CheckDayExists(WeekDays day);
         IEnumerable<WeekDays> GetClinicDays(int id);
+        List<ClinicDay> GetClinicBusinessHours(int id);
         bool AddClinicDay(ClinicDay clinicDay);
         bool UpdateClinicDay(ClinicDay clinicDay);
         bool DeleteClinicDay(ClinicDay clinicDay);

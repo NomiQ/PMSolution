@@ -89,6 +89,13 @@ namespace PMSolution.Web.Services
             return clinicDay;
         }
 
+        public bool CheckDayExists(WeekDays day)
+        {
+            var exists = _appDbContext.ClinicDays
+                            .Any(s => s.Day == day);
+            return exists;
+        }
+
         public IEnumerable<WeekDays> GetClinicDays(int id)
         {
             var days = _appDbContext.ClinicDays
@@ -96,6 +103,14 @@ namespace PMSolution.Web.Services
                             .Select(d => d.Day)
                             .ToList();
             return days;
+        }
+        public List<ClinicDay> GetClinicBusinessHours(int id)
+        {
+            var clinicBusinessHours = _appDbContext.ClinicDays
+                                .Where(s => s.ClinicId == id)
+                                .ToList();
+            
+            return clinicBusinessHours;
         }
 
         public bool AddClinicDay(ClinicDay clinicDay)

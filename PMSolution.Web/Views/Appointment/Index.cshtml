@@ -11,7 +11,7 @@
         @Html.ActionLink("Add new appointment", "SearchPatient", "PatientManagement", null, new { @class = "btn btn-sm btn-success" })
     </div>
     <div class="col-md-6 justify-content-end">
-        <h5 style="text-align:end;">@DateTime.Today.DayOfWeek - @DateTime.Today.ToShortDateString()</h5>
+        <h5 style="text-align:end;">@DateTime.Today.DayOfWeek - @DateTime.Today.ToString("dd/MM/yyy")</h5>
     </div>
 </div>
 
@@ -30,14 +30,14 @@
                 @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-2">
-                <input type="submit" class="btn btn-sm btn-outline-primary" value="View appointments" />
+                <input type="submit" class="btn btn-sm btn-outline-success" value="View appointments" />
             </div>
         </div>
     }
 
     <div class="row" style="padding-top:75px;">
         <div class="col-md-4">
-            <h5 style="text-align:start;">@Model.Date.DayOfWeek - @Model.Date.ToShortDateString()</h5>
+            <h5 style="text-align:start;">@Model.Date.DayOfWeek - @Model.Date.ToString("dd/MM/yyy")</h5>
         </div>
         @if (Model.AllAppointments.Any())
         {
@@ -45,7 +45,7 @@
                 <input class="form-control mr-sm-2" type="text" placeholder="Patient MRN">
             </div>
             <div class="col-md-2">
-                <button class="btn btn-sm btn-outline-primary" style="" type="submit">Search patient</button>
+                <button class="btn btn-sm btn-outline-success" style="" type="submit">Search patient</button>
             </div>
         }
     </div>
@@ -70,7 +70,7 @@
                         {
                             <tr>
                                 <td scope="row">@($"{app.FirstName} {app.LastName}")</td>
-                                <td>@app.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                                <td>@app.DateOfBirth.ToString("dd/MM/yyyy")</td>
                                 <td>@app.CNIC</td>
                                 <td>@app.StartTime</td>
                                 <td>@app.EndTime</td>
@@ -80,7 +80,7 @@
                                             @Html.ActionLink("Edit", "Edit", new { id = app.Id }, new { @class = "text-info" })
                                         </div>
                                         <div>
-                                            @Html.ActionLink("Delete", "Delete", new { id = app.Id }, new { @class = "text-danger" })
+                                            @Html.ActionLink("Delete", "DeleteAppointment", new { id = app.Id }, new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </td>

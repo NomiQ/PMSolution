@@ -278,12 +278,12 @@
     <Compile Include="Services\PatientRepository.cs" />
     <Compile Include="Services\StaffRepository.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\AddEditAppointmentViewModel.cs" />
     <Compile Include="ViewModels\AddEditClinicViewModel.cs" />
     <Compile Include="ViewModels\AddEditPatientViewModel.cs" />
     <Compile Include="ViewModels\AddEditStaffViewModel.cs" />
     <Compile Include="ViewModels\AppointmentsViewModel.cs" />
     <Compile Include="ViewModels\AppointmentViewModel.cs" />
+    <Compile Include="ViewModels\BookAppointmentViewModel.cs" />
     <Compile Include="ViewModels\ClinicDayViewModel.cs" />
     <Compile Include="ViewModels\ClinicViewModel.cs" />
     <Compile Include="ViewModels\EditClinicDayViewModel.cs" />
@@ -291,6 +291,7 @@
     <Compile Include="ViewModels\PatientsViewModel.cs" />
     <Compile Include="ViewModels\PatientViewModel.cs" />
     <Compile Include="ViewModels\SearchPatientsViewModel.cs" />
+    <Compile Include="ViewModels\SelectAppointmentDateViewModel.cs" />
     <Compile Include="ViewModels\StaffsViewModel.cs" />
     <Compile Include="ViewModels\StaffViewModel.cs" />
   </ItemGroup>
@@ -463,7 +464,6 @@
     <Content Include="Views\StaffManagement\AddStaff.cshtml" />
     <Content Include="Views\StaffManagement\EditStaff.cshtml" />
     <Content Include="Views\StaffManagement\ViewStaff.cshtml" />
-    <Content Include="Views\Appointment\AddAppointment.cshtml" />
     <Content Include="Views\PatientManagement\SearchPatient.cshtml" />
     <Content Include="Views\Appointment\Index.cshtml" />
     <Content Include="Views\Clinic\Index.cshtml" />
@@ -481,6 +481,9 @@
     <Content Include="Views\Clinic\EditClinic.cshtml" />
     <Content Include="Views\Clinic\AddClinicDays.cshtml" />
     <Content Include="Views\Clinic\EditClinicDay.cshtml" />
+    <Content Include="Views\Appointment\AvailableAppointments.cshtml" />
+    <Content Include="Views\Appointment\BookAppointment.cshtml" />
+    <Content Include="Views\Appointment\SelectAppointmentDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

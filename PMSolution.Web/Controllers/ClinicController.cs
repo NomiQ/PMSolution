@@ -15,10 +15,13 @@ namespace PMSolution.Web.Controllers
     public class ClinicController : Controller
     {
         private readonly IClinicRepository _clinicRepository;
+        private readonly IAppointmentRepository _appointmentRepository;
 
-        public ClinicController(IClinicRepository clinicRepository)
+        public ClinicController(IClinicRepository clinicRepository,
+                                IAppointmentRepository appointmentRepository)
         {
             _clinicRepository = clinicRepository;
+            _appointmentRepository = appointmentRepository;
         }
 
         public ActionResult Index()
@@ -267,40 +270,13 @@ namespace PMSolution.Web.Controllers
                     StartTimeHour = sHours,
                     StartTimeMin = sMins,
                     StartAMPM = sAMPM,
-
                     EndTimeHour = eHours,
                     EndTimeMin = eMins,
                     EndAMPM = eAMPM,
-
-                    ClinicId = clinicDay.ClinicId,
-                   
-                    Hours = new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "1", Text = "01" },
-                        new SelectListItem { Value = "2", Text = "02" },
-                        new SelectListItem { Value = "3", Text = "03" },
-                        new SelectListItem { Value = "4", Text = "04" },
-                        new SelectListItem { Value = "5", Text = "05" },
-                        new SelectListItem { Value = "6", Text = "06" },
-                        new SelectListItem { Value = "7", Text = "07" },
-                        new SelectListItem { Value = "8", Text = "08" },
-                        new SelectListItem { Value = "9", Text = "09" },
-                        new SelectListItem { Value = "10", Text = "10" },
-                        new SelectListItem { Value = "11", Text = "11" },
-                        new SelectListItem { Value = "12", Text = "12" }
-                    },
-                    Minutes = new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "00", Text = "00" },
-                        new SelectListItem { Value = "15", Text = "15" },
-                        new SelectListItem { Value = "30", Text = "30" },
-                        new SelectListItem { Value = "45", Text = "45" }
-                    },
-                    AMPM = new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "AM", Text = "AM" },
-                        new SelectListItem { Value = "PM", Text = "PM" }
-                    }
+                    ClinicId = clinicDay.ClinicId,                  
+                    Hours = GetHoursList(),
+                    Minutes = GetMinutesList(),
+                    AMPM = GetAMPMList()
                 };
 
                 return View(editClinicdayViewModel);
@@ -324,26 +300,56 @@ namespace PMSolution.Web.Controllers
                                 + editClinicDay.EndTimeMin + " "
                                 + editClinicDay.EndAMPM;
 
-                var clinicDay = new ClinicDay()
-                {
-                    Id = editClinicDay.Id,
-                    Day = day,
-                    OpenTime = openTime,
-                    CloseTime = closeTime,
-                    ClinicId = editClinicDay.ClinicId
-                };
+                // check if start time is not before end time
+                var startTime = Convert.ToDateTime(openTime);
+                var endTime = Convert.ToDateTime(closeTime);
 
-                // update clinic day
-                var updated = _clinicRepository.UpdateClinicDay(clinicDay);
-                if (updated)
+                if (startTime.Hour < endTime.Hour)
                 {
-                    return RedirectToAction("Index");
+                    ModelState.AddModelError("CustomError", "end time cannot be before start time!");
+                    var model = new EditClinicDayViewModel()
+                    {
+                        Id = editClinicDay.Id,
+                        Day = editClinicDay.Day,
+                        StartTimeHour = editClinicDay.StartTimeHour,
+                        StartTimeMin = editClinicDay.StartTimeMin,
+                        StartAMPM = editClinicDay.StartAMPM,
+
+                        EndTimeHour = editClinicDay.EndTimeHour,
+                        EndTimeMin = editClinicDay.EndTimeMin,
+                        EndAMPM = editClinicDay.EndAMPM,
+                        ClinicId = editClinicDay.ClinicId,
+                        Hours = GetHoursList(),
+                        Minutes = GetMinutesList(),
+                        AMPM = GetAMPMList()
+                    };
+
+                    return View(model);
+                }
+                else
+                {
+                    // create clinic day
+                    var clinicDay = new ClinicDay()
+                    {
+                        Id = editClinicDay.Id,
+                        Day = day,
+                        OpenTime = openTime,
+                        CloseTime = closeTime,
+                        ClinicId = editClinicDay.ClinicId
+                    };
+
+                    // update clinic day
+                    var updated = _clinicRepository.UpdateClinicDay(clinicDay);
+                    if (updated)
+                    {
+                        return RedirectToAction("Index");
+                    }
                 }
 
                 return HttpNotFound("Unale to save day. Something went wrong while saving");
 
             }
-            return null;
+            return HttpNotFound();
         }
 
         [HttpGet]
@@ -353,16 +359,77 @@ namespace PMSolution.Web.Controllers
             var clinicDay = _clinicRepository.GetClinicDay(id);
             if (clinicDay != null)
             {
-                var deleted = _clinicRepository.DeleteClinicDay(clinicDay);
+                // convert day to enum day
+                var day = Convert.ToString(clinicDay.Day);
+                var enumDay = ((DayOfWeek)Enum.Parse(typeof(DayOfWeek), day));
 
-                if (deleted)
+                // check if there are future appointments booked on this day
+                var appExists = _appointmentRepository.Appointments
+                                    .Where(s => s.Date >= DateTime.Today)
+                                    .Any(s => s.Date.DayOfWeek == enumDay);
+
+                if (appExists)
                 {
-                    return RedirectToAction("Index");
+                    // return to index with error 
+                    ViewBag.Error = $"Failed to delete {day}. There are future appointments booked on this day";
+                    
+                    return View("Index");
+                }
+                else
+                {
+                    // delete day
+                    var deleted = _clinicRepository.DeleteClinicDay(clinicDay);
+
+                    if (deleted)
+                    {
+                        return RedirectToAction("Index");
+                    }
                 }
             }
 
             return HttpNotFound();
         }
 
+
+
+        // local methods
+        public List<SelectListItem> GetHoursList ()
+        {
+            return new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "1", Text = "01" },
+                        new SelectListItem { Value = "2", Text = "02" },
+                        new SelectListItem { Value = "3", Text = "03" },
+                        new SelectListItem { Value = "4", Text = "04" },
+                        new SelectListItem { Value = "5", Text = "05" },
+                        new SelectListItem { Value = "6", Text = "06" },
+                        new SelectListItem { Value = "7", Text = "07" },
+                        new SelectListItem { Value = "8", Text = "08" },
+                        new SelectListItem { Value = "9", Text = "09" },
+                        new SelectListItem { Value = "10", Text = "10" },
+                        new SelectListItem { Value = "11", Text = "11" },
+                        new SelectListItem { Value = "12", Text = "12" }
+                    };
+        }
+
+        public List<SelectListItem> GetMinutesList()
+        {
+            return new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "00", Text = "00" },
+                        new SelectListItem { Value = "15", Text = "15" },
+                        new SelectListItem { Value = "30", Text = "30" },
+                        new SelectListItem { Value = "45", Text = "45" }
+                    };
+        }
+
+        public List<SelectListItem> GetAMPMList()
+        {
+            return new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "AM", Text = "AM" },
+                        new SelectListItem { Value = "PM", Text = "PM" }
+                    };
+        }
     }
 }
