@@ -35,7 +35,7 @@ namespace PMSolution.Test
                 customError = ""
                 
             };
-
+            //objects to hold clinic and appointment repositories
             var mock1 = new Mock<IClinicRepository>();
             var mock2 = new Mock<IAppointmentRepository>();
 
