@@ -274,9 +274,9 @@ namespace PMSolution.Web.Controllers
                     EndTimeMin = eMins,
                     EndAMPM = eAMPM,
                     ClinicId = clinicDay.ClinicId,                  
-                    Hours = GetHoursList(),
-                    Minutes = GetMinutesList(),
-                    AMPM = GetAMPMList()
+                    Hours = _clinicRepository.GetHoursList(),
+                    Minutes = _clinicRepository.GetMinutesList(),
+                    AMPM = _clinicRepository.GetAMPMList()
                 };
 
                 return View(editClinicdayViewModel);
@@ -292,7 +292,6 @@ namespace PMSolution.Web.Controllers
             if (ModelState.IsValid)
             {
                 var day = editClinicDay.Day;
-
                 var openTime = editClinicDay.StartTimeHour + ":"
                                 + editClinicDay.StartTimeMin + " "
                                 + editClinicDay.StartAMPM;
@@ -300,17 +299,24 @@ namespace PMSolution.Web.Controllers
                                 + editClinicDay.EndTimeMin + " "
                                 + editClinicDay.EndAMPM;
 
-                // check if start time is not before end time
-                var startTime = Convert.ToDateTime(openTime);
-                var endTime = Convert.ToDateTime(closeTime);
+                // to check if start time is not before end time
+                var dtStart = DateTime.Parse(openTime).ToString("HH:mm");
+                var dtEnd = DateTime.Parse(closeTime).ToString("HH:mm");
 
-                if (startTime.Hour < endTime.Hour)
+                var totalStartMinutes = TimeSpan.Parse(dtStart).TotalMinutes;
+                var totalEndMinutes = TimeSpan.Parse(dtEnd).TotalMinutes;
+
+
+                // check if any appointments exists on before open time and after close time
+                var appointmentExists = _appointmentRepository
+                                          .CheckAppointmentExists(totalStartMinutes, totalEndMinutes, day);
+
+                if (totalStartMinutes >= totalEndMinutes || appointmentExists)
                 {
-                    ModelState.AddModelError("CustomError", "end time cannot be before start time!");
                     var model = new EditClinicDayViewModel()
                     {
                         Id = editClinicDay.Id,
-                        Day = editClinicDay.Day,
+                        Day = day,
                         StartTimeHour = editClinicDay.StartTimeHour,
                         StartTimeMin = editClinicDay.StartTimeMin,
                         StartAMPM = editClinicDay.StartAMPM,
@@ -319,20 +325,32 @@ namespace PMSolution.Web.Controllers
                         EndTimeMin = editClinicDay.EndTimeMin,
                         EndAMPM = editClinicDay.EndAMPM,
                         ClinicId = editClinicDay.ClinicId,
-                        Hours = GetHoursList(),
-                        Minutes = GetMinutesList(),
-                        AMPM = GetAMPMList()
+                        Hours = _clinicRepository.GetHoursList(),
+                        Minutes = _clinicRepository.GetMinutesList(),
+                        AMPM = _clinicRepository.GetAMPMList()
                     };
+                    
+                    if (appointmentExists)
+                    {
+                        ModelState.AddModelError("CustomError", "There are appointments booked in " +
+                        "the future either before the open time or after closing time!" +
+                        "Please amend the appointments before making changes.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("CustomError", "Ensure start time is not equal or before the end time!");
+                    }
 
                     return View(model);
                 }
+               
                 else
                 {
                     // create clinic day
                     var clinicDay = new ClinicDay()
                     {
                         Id = editClinicDay.Id,
-                        Day = day,
+                        Day = editClinicDay.Day,
                         OpenTime = openTime,
                         CloseTime = closeTime,
                         ClinicId = editClinicDay.ClinicId
@@ -347,8 +365,8 @@ namespace PMSolution.Web.Controllers
                 }
 
                 return HttpNotFound("Unale to save day. Something went wrong while saving");
-
             }
+
             return HttpNotFound();
         }
 
@@ -388,48 +406,6 @@ namespace PMSolution.Web.Controllers
             }
 
             return HttpNotFound();
-        }
-
-
-
-        // local methods
-        public List<SelectListItem> GetHoursList ()
-        {
-            return new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "1", Text = "01" },
-                        new SelectListItem { Value = "2", Text = "02" },
-                        new SelectListItem { Value = "3", Text = "03" },
-                        new SelectListItem { Value = "4", Text = "04" },
-                        new SelectListItem { Value = "5", Text = "05" },
-                        new SelectListItem { Value = "6", Text = "06" },
-                        new SelectListItem { Value = "7", Text = "07" },
-                        new SelectListItem { Value = "8", Text = "08" },
-                        new SelectListItem { Value = "9", Text = "09" },
-                        new SelectListItem { Value = "10", Text = "10" },
-                        new SelectListItem { Value = "11", Text = "11" },
-                        new SelectListItem { Value = "12", Text = "12" }
-                    };
-        }
-
-        public List<SelectListItem> GetMinutesList()
-        {
-            return new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "00", Text = "00" },
-                        new SelectListItem { Value = "15", Text = "15" },
-                        new SelectListItem { Value = "30", Text = "30" },
-                        new SelectListItem { Value = "45", Text = "45" }
-                    };
-        }
-
-        public List<SelectListItem> GetAMPMList()
-        {
-            return new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "AM", Text = "AM" },
-                        new SelectListItem { Value = "PM", Text = "PM" }
-                    };
         }
     }
 }

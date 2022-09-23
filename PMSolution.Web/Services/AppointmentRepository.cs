@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PMSolution.Web.Domain;
+using PMSolution.Web.Enums;
 using PMSolution.Web.Models;
 
 namespace PMSolution.Web.Services
@@ -25,6 +26,39 @@ namespace PMSolution.Web.Services
             {
                 return _appDbContext.Appointments;
             }
+        }
+
+        public bool CheckAppointmentExists(double startMinutes, double endMinutes, WeekDays weekDay)
+        {
+            bool exists = false;
+            int day = Convert.ToInt32(weekDay);
+
+            //TODO: fix this.. find a way to check how we compare the days
+            var appointments = _appDbContext.Appointments
+                            .Where(s => s.Date > DateTime.Now
+                            && s.Date.DayOfWeek.ToString() == weekDay.ToString())
+                            .ToList();
+
+            //var saturday = (int)DayOfWeek.Saturday;
+            //var query = from note in userNotes
+            //            where note.NoteDate > lastMonth && SqlFunctions.DatePart("dw", note.NoteDate) != saturday
+            //            select note;
+
+            foreach (var app in appointments)
+            {
+                var dtStart = DateTime.Parse(app.StartTime).ToString("HH:mm");
+                var dtEnd = DateTime.Parse(app.EndTime).ToString("HH:mm");
+
+                var dtStartMinutes = TimeSpan.Parse(dtStart).TotalMinutes;
+                var dtEndMinutes = TimeSpan.Parse(dtEnd).TotalMinutes;
+
+                if (dtStartMinutes < startMinutes || dtEndMinutes > endMinutes)
+                {
+                    exists = true;
+                }
+            }
+
+            return exists;
         }
 
         public Appointment GetAppointment(int id)

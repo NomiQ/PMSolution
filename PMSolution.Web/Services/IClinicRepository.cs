@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using PMSolution.Web.Domain;
 using PMSolution.Web.Enums;
 
@@ -21,5 +22,9 @@ namespace PMSolution.Web.Services
         bool AddClinicDay(ClinicDay clinicDay);
         bool UpdateClinicDay(ClinicDay clinicDay);
         bool DeleteClinicDay(ClinicDay clinicDay);
+
+        List<SelectListItem> GetHoursList();
+        List<SelectListItem> GetMinutesList();
+        List<SelectListItem> GetAMPMList();
     }
 }
