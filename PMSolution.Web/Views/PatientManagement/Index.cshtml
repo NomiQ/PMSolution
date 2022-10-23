@@ -1,4 +1,5 @@
 ﻿@model PMSolution.Web.ViewModels.PatientsViewModel
+
 @{
     ViewBag.Title = "Patient Management";
 }
@@ -36,34 +37,53 @@
         </div>
         @if (Model.AllPatients.Any())
         {
-            <div class="col-md-8" id="searchPatient">
-                <div class="row">
-                    <div class="table-responsive border rounded  border-top-0">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Surname</th>
-                                    <th>Date of Birth</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input class="form-control" /></td>
-                                    <td><input type="date" class="form-control" /></td>
-                                </tr>
-                                <tr>
-                                    <td style="border-top:none">
-                                    </td>
-                                    <td class="text-right" style="border-top:none">
-                                        <a class="btn btn-sm btn-outline-success" style="margin-right:10px;">Search</a>
-                                        <a class="btn btn-sm btn-outline-primary">Clear</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+            using (Html.BeginForm("ViewPatient", "PatientManagement", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="col-md-8" id="searchPatient">
+                    <div class="row">
+                        <div class="table-responsive border rounded  border-top-0">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="form-group row justify-content-start">
+                                                @*<div class="col-sm-2" style="text-align:end">
+                                                    @Html.LabelFor(model => model.LastName, new { htmlAttributes = new { @class = "col-form-label" } })
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                                                </div>*@
+                                                Search  
+                                            </div>
+                                        </th>
+                                        <th>Date of Birth</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input class="form-control" /></td>
+                                        <td><input type="date" class="form-control" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-top:none">
+                                        </td>
+                                        <td class="text-right" style="border-top:none">
+                                            <!-- TODO: Add search and clear functionality-->
+                                            @*<a class="btn btn-sm btn-outline-success" style="margin-right:10px;">Search </a>*@
+                                            <input type="submit" class="btn btn-sm btn-outline-success btn-block" value="Search" />
+                                            <a class="btn btn-sm btn-outline-primary">Clear</a>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
     </div>
 </div>

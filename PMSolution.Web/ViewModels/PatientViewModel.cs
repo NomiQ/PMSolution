@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using PMSolution.Web.Enums;
+using PMSolution.Web.Domain;
 
 namespace PMSolution.Web.ViewModels
 {
