@@ -32,7 +32,16 @@ namespace PMSolution.Web.Services
             return patient;
         }
 
-        public List<Patient> SearchPatient(string surname, DateTime dob)
+
+        public Patient SearchPatient(string surname, DateTime dob)
+        {
+            var patient = _appDbContext.Patients
+                                .FirstOrDefault(s => s.LastName == surname
+                                        && s.DateOfBirth == dob);
+            return patient;
+        }
+
+        public List<Patient> SearchPatients(string surname, DateTime dob)
         {
             var patients = _appDbContext.Patients
                                 .Where(s => s.LastName == surname 
@@ -61,6 +70,7 @@ namespace PMSolution.Web.Services
                 editPatient.FirstName = patient.FirstName;
                 editPatient.LastName = patient.LastName;
                 editPatient.Gender = patient.Gender;
+                editPatient.PhoneNumber = patient.PhoneNumber;
                 editPatient.CNIC = patient.CNIC;
                 editPatient.DateOfBirth = patient.DateOfBirth;
                 editPatient.Address = patient.Address;

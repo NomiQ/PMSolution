@@ -9,7 +9,7 @@
 
 <hr />
 
-@using (Html.BeginForm("SearchPatient", "PatientManagement", FormMethod.Post))
+@using (Html.BeginForm("ViewPatient", "PatientManagement", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 <div class="col-md-8">
@@ -56,7 +56,7 @@
 }
 
 
-@if (Model.SearchPatients != null)
+@*@if (Model.SearchPatients != null)
 {
     <div style="padding-top: 20px;">
         <div class="table-responsive border">
@@ -99,4 +99,4 @@ else
     <div>
         <p class="text-info">No patient record exist in the system!</p>
     </div>
-}
+}*@

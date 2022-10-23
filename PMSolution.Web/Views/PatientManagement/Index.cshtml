@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Patient Management";
 }
-<script>
+@*<script>
     function myFunction() {
         var x = document.getElementById("searchPatient");
         if (x.style.display === "none") {
@@ -12,7 +12,7 @@
             x.style.display = "none";
         }
     }
-</script>
+</script>*@
 
 <div style="padding-top: 40px;">
     <h4>Patient Management</h4>
@@ -23,68 +23,19 @@
 <div class="row">
     <div class="form-group col-md-10">
         <div class="row">
-            <div class="form-group col-md-2">
-                <button class="btn btn-sm btn-outline-success dropdown-toggle" onclick="myFunction()">
-                    Search patient
-                </button>
-            </div>
             <div class="form-group col-md-3">
 
                 @Html.ActionLink("Add new patient", "AddPatient", "PatientManagement",
-                new { @class = "btn btn-sm btn-success" })
+                new { @class = "btn btn-md btn-success" })
+
+            </div>
+            <div class="form-group col-md-3">
+
+                @Html.ActionLink("Search Patient", "SearchPatient", "PatientManagement",
+                new { @class = "btn btn-md btn-success" })
 
             </div>
         </div>
-        @if (Model.AllPatients.Any())
-        {
-            using (Html.BeginForm("ViewPatient", "PatientManagement", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-
-                <div class="col-md-8" id="searchPatient">
-                    <div class="row">
-                        <div class="table-responsive border rounded  border-top-0">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <div class="form-group row justify-content-start">
-                                                @*<div class="col-sm-2" style="text-align:end">
-                                                    @Html.LabelFor(model => model.LastName, new { htmlAttributes = new { @class = "col-form-label" } })
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
-                                                    @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
-                                                </div>*@
-                                                Search  
-                                            </div>
-                                        </th>
-                                        <th>Date of Birth</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input class="form-control" /></td>
-                                        <td><input type="date" class="form-control" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-top:none">
-                                        </td>
-                                        <td class="text-right" style="border-top:none">
-                                            <!-- TODO: Add search and clear functionality-->
-                                            @*<a class="btn btn-sm btn-outline-success" style="margin-right:10px;">Search </a>*@
-                                            <input type="submit" class="btn btn-sm btn-outline-success btn-block" value="Search" />
-                                            <a class="btn btn-sm btn-outline-primary">Clear</a>
-
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
     </div>
 </div>
 @if (Model.AllPatients.Any())
@@ -114,7 +65,7 @@
                                         new { @class = "text-success" })
                                 </div>
                                 <div style="padding-right:10px;">
-                                    @Html.ActionLink("View", "ViewPatient", new { id = patient.Id },
+                                    @Html.ActionLink("View", "ViewPatient", "PatientManagement", new { id = patient.Id },
                                         new { @class = "text-info" })
                                 </div>
                                 <div>

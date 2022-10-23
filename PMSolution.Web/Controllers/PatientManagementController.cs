@@ -37,22 +37,6 @@ namespace PMSolution.Web.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public ActionResult SearchPatient(SearchPatientsViewModel patient)
-        {
-            // TODO........need to check null list case
-
-            var patientList = _patientRepository.SearchPatient(patient.Surname, patient.DateOfBirth).ToList();
-
-            var model = new SearchPatientsViewModel()
-            {
-                SearchPatients = patientList
-            };
-
-            return View(model);
-
-        }
-
         [HttpGet]
         public ActionResult ViewPatient(int id)
         {
@@ -60,6 +44,20 @@ namespace PMSolution.Web.Controllers
             if (patient != null)
             {
                 var mapPatient = Mapper.Map<Patient, PatientViewModel>(patient);
+                return View(mapPatient);
+            }
+
+            return HttpNotFound();
+
+        }
+
+        [HttpPost]
+        public ActionResult ViewPatient(SearchPatientsViewModel patient)
+        {
+            var fPatient = _patientRepository.SearchPatient(patient.Surname, patient.DateOfBirth);
+            if (fPatient != null)
+            {
+                var mapPatient = Mapper.Map<Patient, PatientViewModel>(fPatient);
                 return View(mapPatient);
             }
 
