@@ -3,16 +3,6 @@
 @{
     ViewBag.Title = "Patient Management";
 }
-@*<script>
-    function myFunction() {
-        var x = document.getElementById("searchPatient");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-    }
-</script>*@
 
 <div style="padding-top: 40px;">
     <h4>Patient Management</h4>
@@ -60,10 +50,7 @@
                         <td>@patient.CNIC</td>
                         <td>
                             <div class="row justify-content-center">
-                                <div style="padding-right:10px;">
-                                    @Html.ActionLink("Edit", "EditPatient", "PatientManagement", new { id = patient.Id },
-                                        new { @class = "text-success" })
-                                </div>
+                                
                                 <div style="padding-right:10px;">
                                     @Html.ActionLink("View", "ViewPatient", "PatientManagement", new { id = patient.Id },
                                         new { @class = "text-info" })

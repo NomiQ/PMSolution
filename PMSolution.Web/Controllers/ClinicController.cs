@@ -38,6 +38,7 @@ namespace PMSolution.Web.Controllers
                     PhoneNumber = clinic.PhoneNumber,
                     Address = clinic.Address,
                     FaxNumber = clinic.FaxNumber,
+                    Email = clinic.Email,
                     // ensure days are in order
                     ClinicDays = clinic.ClinicDays.OrderBy(s => (int)(s.Day)).ToList()
                 };

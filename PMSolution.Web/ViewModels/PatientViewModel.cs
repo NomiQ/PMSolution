@@ -33,5 +33,6 @@ namespace PMSolution.Web.ViewModels
         [DisplayFormat(DataFormatString = "{0:dd MM yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
+        public bool Ind { get; set; }
     }
 }

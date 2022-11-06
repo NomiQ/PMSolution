@@ -108,12 +108,12 @@
             <div class="col-sm-6 position-relative">
                 <div class="row">
                     <div class="col-sm-3">
-                        @Html.ActionLink("Cancel", "Index", new object { },
+                        @Html.ActionLink("Cancel", "ViewPatient", new { id = Model.Id },
                         new { @class = "btn btn-outline-primary btn-block" })
 
                     </div>
                     <div class="col-sm-3">
-                        <input type="submit" class="btn btn-primary btn-block" value="Update" />
+                        <input type="submit" class="btn btn-success btn-block" value="Update" />
                     </div>
                 </div>
             </div>
