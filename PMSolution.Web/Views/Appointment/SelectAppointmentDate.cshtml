@@ -47,7 +47,16 @@
                     </div>
                     <div class="row" style="padding-top:50px;">
                         <div class="offset-2 col-md-2" style="text-align:right;">
-                            @Html.ActionLink("Back", "Index", new { date = DateTime.Today.Date }, new { @class = "btn btn-sm btn-outline-primary" })
+                            
+                            @if (Model.Ind == true)
+                            {
+                                @Html.ActionLink("Back", "ViewPatient", "PatientManagement", new { id = Model.PatientId, ind = Model.Ind }, new { @class = "btn btn-outline-primary btn-block" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Back", "Index", new { date = DateTime.Today.Date }, new { @class = "btn btn-sm btn-outline-primary" })
+                            }
+
                         </div>
                         <div class="col-md-2" style="padding-left:0px;">
                             <input type="submit" class="btn btn-sm btn-outline-success" value="View available appointments" />

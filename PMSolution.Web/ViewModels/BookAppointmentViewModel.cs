@@ -22,6 +22,7 @@ namespace PMSolution.Web.ViewModels
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public bool Ind { get; set; }
 
         public List<SelectListItem> Appointments { get; set; }
     }

@@ -43,7 +43,15 @@
 
                     <div class="form-group row justify-content-end">
                         <div class="col-sm-2">
-                            @Html.ActionLink("Back", "Index", "", new { @class = "btn btn-outline-primary btn-block" })
+                            @if (Model.Ind == true)
+                            {
+                                @Html.ActionLink("Back", "PatientManagement", "ViewPatient", new { id = Model.Id }, new { @class = "btn btn-outline-primary btn-block" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Back", "Index", "", new { @class = "btn btn-outline-primary btn-block" })
+                            }
+
                         </div>
                         <div class="col-sm-2">
                             <input type="submit" class="btn btn-outline-success" value="Book" />

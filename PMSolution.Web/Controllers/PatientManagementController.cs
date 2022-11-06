@@ -38,12 +38,13 @@ namespace PMSolution.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewPatient(int id)
+        public ActionResult ViewPatient(int id, bool ind)
         {
             var patient = _patientRepository.GetPatient(id);
             if (patient != null)
             {
                 var mapPatient = Mapper.Map<Patient, PatientViewModel>(patient);
+                mapPatient.Ind = ind;
                 return View(mapPatient);
             }
 

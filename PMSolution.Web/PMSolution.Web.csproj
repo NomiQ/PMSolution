@@ -36,7 +36,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -260,6 +260,10 @@
     <Compile Include="Migrations\202010221909365_ChangesStringToEnumForWeekDays.cs" />
     <Compile Include="Migrations\202010221909365_ChangesStringToEnumForWeekDays.Designer.cs">
       <DependentUpon>202010221909365_ChangesStringToEnumForWeekDays.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202211062131290_PatieBooIndicator.cs" />
+    <Compile Include="Migrations\202211062131290_PatieBooIndicator.Designer.cs">
+      <DependentUpon>202211062131290_PatieBooIndicator.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -516,6 +520,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010221909365_ChangesStringToEnumForWeekDays.resx">
       <DependentUpon>202010221909365_ChangesStringToEnumForWeekDays.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202211062131290_PatieBooIndicator.resx">
+      <DependentUpon>202211062131290_PatieBooIndicator.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

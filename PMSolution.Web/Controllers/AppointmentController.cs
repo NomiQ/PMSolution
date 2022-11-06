@@ -72,7 +72,7 @@ namespace PMSolution.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult SelectAppointmentDate(int id)
+        public ActionResult SelectAppointmentDate(int id, bool ind)
         {
             var patient = _patientRepository.GetPatient(id);
             
@@ -84,7 +84,8 @@ namespace PMSolution.Web.Controllers
                     FirstName = patient.FirstName,
                     LastName = patient.LastName,
                     DateOfBirth = patient.DateOfBirth,
-                    PhoneNumber = patient.PhoneNumber
+                    PhoneNumber = patient.PhoneNumber,
+                    Ind = ind
                 };
 
                 return View(model);
